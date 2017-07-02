@@ -20,6 +20,10 @@ Atualmente a Receita Federal já gera a declaração pré-preenchida contendo os
 
 # 4. Proposta de uso de blockchain para a resolução do problema
 
+Devido ao blockchain ser imutável, irrefutável e auditável, essa tecnologia será muito muito útil para a implementação do controle de trocas de emissão de notas fiscais, permitindo os seguintes atributos:
+- disponibilidade - por estar disposto de forma distribuída na rede permitindo uma descentralização dos registros
+- 
+
 A proposta é armazenar os dados de trocas de recibos entre pessoas (físicas ou jurídicas) em uma base de dados distribuída baseada em blockchain. Um dos nós da rede pode estar sob gestão do SERPRO (não restrito ao órgão), considerando que podem estar distribuídos entre vários nós, desde a secretaria de receita dos Estados, bem como entidades privadas que atuam no provimento de soluções de emissão de recibos, entre outros serviços relacionados.
 
 # 5. Possíveis impactos de adoção da tecnologia proposta
@@ -39,18 +43,19 @@ http://www.multichain.com
 A solução de integração à API é a biblioteca MultiChainJavaAPI
 https://github.com/SimplyUb/MultiChainJavaAPI
 
+A solução presente na pasta do projeto [src/cliente-nfe-blockchain](src/cliente-nfe-blockchain) contém o código para execução do projeto.
+
+A pasta [releases](/releases) contém os arquivos .jar com a última versão compilada do projeta, pronta para executar.
+
 # 6.1 Instalação do Multichain
 Manual de instalação em ambiente Linux:
+
+> Como super usuário ou usuário sudo execute os seguintes comandos:
 ```
 #wget http://www.multichain.com/download/multichain-1.0-beta-2.tar.gz
 #tar -xvzf multichain-1.0-beta-2.tar.gz
 #cd multichain-1.0-beta-2
 #cp multichaind multichain-cli multichain-util /usr/local/bin
-```
-
-# 6.2 Baixar código do projeto
-```
-$git ...
 ```
 
 # 6.2 Inicialização do serviço Blockchain
@@ -74,11 +79,16 @@ $multichaind nfeblockchain -daemon
 
 - **OBS.:** Caso for necessário parar o serviço, execute o comando:
 ```
-nultichain-cli nfeblockchain stop
+$multichain-cli nfeblockchain stop
 ```
+
 O serviço levantado irá habilitar duas portas de comunicação:
 - **6805** - porta de comunicação entre nós da blockchain
 - **6804** - porta de comunicação do protocolo RPC
+
+```
+$ multichain-cli nfeblockchain grant <CHAVE_DO_CLIENTE> connect,send,receive
+```
 
 # 6.4 Comandos
 
