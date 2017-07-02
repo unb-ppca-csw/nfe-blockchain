@@ -20,9 +20,10 @@ Atualmente a Receita Federal já gera a declaração pré-preenchida contendo os
 
 # 4. Proposta de uso de blockchain para a resolução do problema
 
-Devido ao blockchain ser imutável, irrefutável e auditável, essa tecnologia será muito muito útil para a implementação do controle de trocas de emissão de notas fiscais, permitindo os seguintes atributos:
+Devido as características da tecnologia de blockchain, essa tecnologia será muito muito útil para a implementação do controle de trocas de emissão de notas fiscais, permitindo que seus usuários usufruam dos seguintes atributos:
 - disponibilidade - por estar disposto de forma distribuída na rede permitindo uma descentralização dos registros
-- 
+- distribuição do banco de dados - na arquitetura tradicional centralizada, os bancos de dados necessitam concentrar um grande número de informações a fim de conseguir um nível aceitável de confiança nas transações. Desta forma, a implementação do blockchain permite reduzir o tamanho do banco de dados necessário para controlar e garantir a confiança dos usuários.
+- segurança - com o modelo de banco de dados distribuído e com o uso de criptografia de chaves públicas para garantir a segurança das transações, é possível garantir um nível de segurança adequado.
 
 A proposta é armazenar os dados de trocas de recibos entre pessoas (físicas ou jurídicas) em uma base de dados distribuída baseada em blockchain. Um dos nós da rede pode estar sob gestão do SERPRO (não restrito ao órgão), considerando que podem estar distribuídos entre vários nós, desde a secretaria de receita dos Estados, bem como entidades privadas que atuam no provimento de soluções de emissão de recibos, entre outros serviços relacionados.
 
@@ -32,23 +33,27 @@ A proposta pode trazer como consequência os seguintes impactos positivos:
 - Ao integrar os dados providos pela solução, poderá prover maior facilidade para o contribuínte no momento de gerar a declaração de imposto de renda, tendo em vista que o sistema da Receita Federal (produzido pelo SERPRO) poderá prover a declaração pré-preenchida já com a consolidação dos dados dos receibos registrados presentes na rede blockchain.
 - Armazém digital de recibos que permite às pessoas acessarem com mais facilidade os recibos que porventura possam comprovar o pagamento de determinado produto ou serviço, tanto para fins de auditoria tributária/fiscal, como para fins de comprovação judicial
 
-Aspectos negativos da proposta que precisam ser tratados:
-- Uma vez que as informações de transferências de valores financeiros ficam registrados na blockchain, é necessário criar mecanismos que mascarem as informações do emitente e do receptor, permitindo que apenas quem emitiu e quem recebeu os recibos possam ter acesso a essas informações.
+A seguir uma lista de aspectos negativos previstos da proposta que precisam ser tratados:
+- Uma vez que as informações de transferências de valores financeiros ficam registrados na blockchain, é necessário criar mecanismos que mascarem as informações do emitente e do receptor, permitindo que apenas quem emitiu e quem recebeu os recibos possam ter acesso a essas informações, tendo em vista que os dados da nota fiscal armazenadas no formato json são registradas.
+- Uma solução é encriptar as informações de forma que apenas o emitente, o receptor e a receita federal possam desencriptar estas informações. A proposta apresentada no link abaixo aparenta ser uma solução razoável para este problema:
+http://www.multichain.com/developers/stream-confidentiality/
 
 # 6. Prova de Conceito utilizando solução Multichain
 
-A solução de implementação do blockchain é o multichain
+* A solução de implementação do blockchain é o multichain
 http://www.multichain.com
 
-A solução de integração à API é a biblioteca MultiChainJavaAPI
+* A solução de integração à API é a biblioteca MultiChainJavaAPI
 https://github.com/SimplyUb/MultiChainJavaAPI
 
-A solução presente na pasta do projeto [src/cliente-nfe-blockchain](src/cliente-nfe-blockchain) contém o código para execução do projeto.
+A solução presente na pasta do projeto [src/cliente-nfe-blockchain](src/cliente-nfe-blockchain) contém o código da solução do projeto.
 
 A pasta [releases](/releases) contém os arquivos .jar com a última versão compilada do projeta, pronta para executar.
 
 # 6.1 Instalação do Multichain
 Manual de instalação em ambiente Linux:
+
+Para execução desse projeto foi criado uma máquina virtual Docker já configurada para executar as instruções de exemplo, mas a seguir está o passo-a-passo de como instalar a solução multichain em cada nó de interação.
 
 > Como super usuário ou usuário sudo execute os seguintes comandos:
 ```
@@ -69,7 +74,7 @@ $multichain-util create nfeblockchain
 > OBS.: Os dados presentes possuem credenciais de autenticação e identificadores definidos que serão usadas nos exemplos de aplicação. Recomenda-se em casos reais de aplicação a modificação desses parâmetros!
 
 ```
-$cp <proje>/conf/... ./multichain/nfeblockchain/
+$cp <projeto>/conf/... ./multichain/nfeblockchain/
 ```
 
 - **Passo 3**: levantar processo
