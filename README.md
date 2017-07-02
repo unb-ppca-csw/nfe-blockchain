@@ -1,4 +1,5 @@
-# nfe-blockchain - Sistema de Armazenamento de Notas Fiscais usando Blockchain
+# nfe-blockchain 
+## Sistema de Armazenamento de Notas Fiscais usando Blockchain
 Sistema para armazenamento de Notas Fiscais emitidas por pessoas físicas ou jurídicas para pessoas físicas ou jurídicas em formato de blockchain.
 
 Este texto aborda sobre uma proposta de sistema para armazenamento de Notas Fiscais emitidas por pessoas físicas ou jurídicas para pessoas físicas ou jurídicas em formato de blockchain
@@ -47,21 +48,40 @@ Manual de instalação em ambiente Linux:
 #cp multichaind multichain-cli multichain-util /usr/local/bin
 ```
 
-# 6.2 Inicialização do Blockchain
+# 6.2 Baixar código do projeto
+```
+$git ...
+```
 
-- Passo 1: criação do nó principal
+# 6.2 Inicialização do serviço Blockchain
+
+- **Passo 1**: criação do nó principal
 ```
 $multichain-util create nfeblockchain
 ```
-- Passo 2: levantar processo
+
+- **Passo 2**: configuração do ambiente
+> OBS.: Os dados presentes possuem credenciais de autenticação e identificadores definidos que serão usadas nos exemplos de aplicação. Recomenda-se em casos reais de aplicação a modificação desses parâmetros!
+
+```
+$cp <proje>/conf/... ./multichain/nfeblockchain/
+```
+
+- **Passo 3**: levantar processo
 ```
 $multichaind nfeblockchain -daemon
 ```
 
-- Caso for necessário parar o serviço, executar o comando:
+- **OBS.:** Caso for necessário parar o serviço, execute o comando:
 ```
 nultichain-cli nfeblockchain stop
 ```
+O serviço levantado irá habilitar duas portas de comunicação:
+- **6805** - porta de comunicação entre nós da blockchain
+- **6804** - porta de comunicação do protocolo RPC
+
+# 6.4 Comandos
+
 
 # 7. Licença
 
