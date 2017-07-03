@@ -43,12 +43,12 @@ http://www.multichain.com/developers/stream-confidentiality/
 * A solução de implementação do blockchain é o multichain
 http://www.multichain.com
 
-* A solução de integração à API é a biblioteca MultiChainJavaAPI
-https://github.com/SimplyUb/MultiChainJavaAPI
+~~* A solução de integração à API é a biblioteca MultiChainJavaAPI
+https://github.com/SimplyUb/MultiChainJavaAPI~~
 
-A solução presente na pasta do projeto [src/cliente-nfe-blockchain](src/cliente-nfe-blockchain) contém o código da solução do projeto.
+~~A solução presente na pasta do projeto [src/cliente-nfe-blockchain](src/cliente-nfe-blockchain) contém o código da solução do projeto.~~
 
-A pasta [releases](/releases) contém os arquivos .jar com a última versão compilada do projeta, pronta para executar.
+~~A pasta [releases](/releases) contém os arquivos .jar com a última versão compilada do projeto, pronta para executar.~~
 
 # 6.1 Instalação do Multichain
 Manual de instalação em ambiente Linux:
@@ -62,6 +62,7 @@ Para execução desse projeto foi criado uma máquina virtual Docker já configu
 #cd multichain-1.0-beta-2
 #cp multichaind multichain-cli multichain-util /usr/local/bin
 ```
+>Obs.: Caso for utilizar as máquinas docker este passo torna-se desnecessário.
 
 # 6.2 Preparação do ambiente com container Docker para executar o Blockchain
 
@@ -81,7 +82,7 @@ cd nfe-blockchain
 ```
 #docker build -t nfechainimage -f docker/Dockerfile .
 ```
->para facilitar vá na pasta docker/scripts e execute ./build_docker_image.sh
+>para facilitar vá na pasta docker e execute ./build_docker_image.sh
 
 > OBS.: Os dados presentes possuem credenciais de autenticação e identificadores definidos que serão usadas nos exemplos de aplicação. Recomenda-se em casos reais de aplicação a modificação desses parâmetros!
 
@@ -96,14 +97,14 @@ O serviço levantado irá habilitar duas portas de comunicação:
 ```
 #docker run --network=nfechainnetwork --ip=10.0.0.1 -it nfechainimage
 ```
->para facilitar vá na pasta docker/scripts e execute ./start_no1.sh
+>para facilitar vá na pasta docker e execute ./start_no1.sh
 
 - **Passo 2**: Em nova sessão de terminal execute o container dos outros nós:
 >Este container será referenciado como **nó 2**
 ```
 #docker run --network=nfechainnetwork --ip=10.0.0.2 -it nfechainimage
 ```
->para facilitar vá na pasta docker/scripts e execute ./start_no2.sh
+>para facilitar vá na pasta docker e execute ./start_no2.sh
 
 Pronto! agora teremos os dois nós conectados, prontos para interagir.
 
