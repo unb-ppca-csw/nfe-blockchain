@@ -1,0 +1,7 @@
+#/bin/shell
+
+function prop {
+  grep "${1}" /etc/nfechain/nfechain.properties|cut -d'=' -f2
+}
+
+multichaind $(prop 'nfechain.chainname')@$(prop 'nfechain.host'):$(prop 'nfechain.network-port') -daemon -rpcuser="$(prop 'nfechain.username')" -rpcpassword="$(prop 'nfechain.password')"

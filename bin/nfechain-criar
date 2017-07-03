@@ -1,0 +1,11 @@
+#/bin/shell
+
+function prop {
+  grep "${1}" /etc/nfechain/nfechain.properties|cut -d'=' -f2
+}
+
+multichain-util create $(prop 'nfechain.chainname') -'anyone-can-connect'=true -'anyone-can-send'=true -'anyone-can-receive'=true -'anyone-can-issue'=true -'default-rpc-port'=$(prop 'nfechain.rpc-port') -'default-network-port'=$(prop 'nfechain.network-port')
+
+multichaind nfechain -daemon -rpcuser="$(prop 'nfechain.username')" -rpcpassword="$(prop 'nfechain.password')"
+
+echo "Nó blockchain: $(prop 'nfechain.chainname') criado com sucesso!"
