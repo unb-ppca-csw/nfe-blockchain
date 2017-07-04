@@ -1,0 +1,3 @@
+#/bin/shell
+
+multichain-cli nfe -rpcuser='user' -rpcpassword='password' getaddresses | jq '.[]'

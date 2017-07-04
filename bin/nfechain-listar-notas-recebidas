@@ -1,7 +1,0 @@
-#/bin/shell
-
-function prop {
-  grep "${1}" /etc/nfechain/nfechain.properties|cut -d'=' -f2
-}
-
-multichain-cli $(prop 'nfechain.chainname') listwallettransactions -rpcuser="$(prop 'nfechain.username')" -rpcpassword="$(prop 'nfechain.password')"

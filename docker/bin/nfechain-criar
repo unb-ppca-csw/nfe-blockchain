@@ -1,0 +1,7 @@
+#/bin/shell
+
+multichain-util create nfe -'anyone-can-connect'=true -'anyone-can-send'=true -'anyone-can-receive'=true -'anyone-can-issue'=true -'default-rpc-port'=5554 -'default-network-port'=5555 -'max-std-element-size'=32768
+
+multichaind nfe -daemon -rpcuser='user' -rpcpassword='password'
+
+echo "Nó blockchain: 'nfe' criado com sucesso!"

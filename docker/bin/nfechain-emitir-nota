@@ -1,0 +1,15 @@
+#/bin/shell
+
+endereco=$(multichain-cli nfe -rpcuser='user' -rpcpassword='password' listpermissions create | jq -r '.[0].address')
+
+stream_emt="emt$1"
+stream_rec="fav$2"
+dataorig="{emitente:'$1', favorecido:'$2', valor:$3, descricao:'$4'}"
+datahex=$(python /usr/local/bin/nfechain-util-string2hex.py -e "'$dataorig'")
+
+multichain-cli nfe -rpcuser='user' -rpcpassword='password' createfrom $endereco stream $stream_emt true > /dev/null 2>&1 &
+multichain-cli nfe -rpcuser='user' -rpcpassword='password' createfrom $endereco stream $stream_rec true > /dev/null 2>&1 &
+multichain-cli nfe -rpcuser='user' -rpcpassword='password' createfrom $endereco stream $stream_rec true > /dev/null 2>&1 &
+multichain-cli nfe -rpcuser='user' -rpcpassword='password' subscribe '["'$stream_emt'", "'$stream_rec'"]'> /dev/null 2>&1 &
+
+multichain-cli nfe -rpcuser='user' -rpcpassword='password' createrawsendfrom $endereco '{}' '[{"for":"'$stream_emt'","key":"'$2'","data":"'$datahex'"},{"for":"'$stream_rec'","key":"'$1'","data":"'$datahex'"}]' send

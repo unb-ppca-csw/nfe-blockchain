@@ -1,0 +1,2 @@
+multichain-cli nfe -rpcuser='user' -rpcpassword='password' stop
+rm -r ~/.multichain/nfe/ 

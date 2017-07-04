@@ -1,0 +1,12 @@
+#/bin/shell
+
+multichain-cli nfe -rpcuser='user' -rpcpassword='password' subscribe '["emt'$1'"]' > /dev/null 2>&1 &
+
+dataset=$(multichain-cli nfe -rpcuser='user' -rpcpassword='password' liststreamitems "emt$1" true | jq -r '.[].data')
+
+for data in $dataset
+do
+	if [[ ! -z $data ]]; then
+		echo $(python /usr/local/bin/nfechain-util-string2hex.py -d $data)
+	fi
+done
