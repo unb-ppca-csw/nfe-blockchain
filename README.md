@@ -151,7 +151,7 @@ Stream with this name not found: fav12345678901
 ```
 >Observe que não será listado nenhuma nota associada ao cpf exemplo porque nenhuma nota foi gerada.
 
->** No segundo container [nó 2]: **
+**No segundo container [nó 2]:**
 
 - **Passo 5**: Conectar ao blockchain:
 ```
@@ -186,7 +186,7 @@ Stream with this name not found: emt98765432101
 ```
 >Observe que também não será listado nenhuma nota associada ao cpf exemplo porque nenhma nota ainda foi gerada.
 
-** No primeiro container [nó 1]: **
+**No primeiro container [nó 1]:**
 
 - **Passo 7**: Emitir uma nota fiscal de 100 reais para o segundo nó [nó 2] seguindo o seguinte modelo:
 ```
@@ -200,9 +200,12 @@ Stream with this name not found: emt98765432101
 ```
 >Resultado:
 ```
-cc8aac7fb852eca1c8fca8bcfc3a9841816b213eff69f89d84451f105bbc5d5f
+def5b359fe00c68f520869aae63d42684e65456bab17b161442b7bc5fa6f3549
 ```
->Obs: a ação de emitir nota só pode ser realizada no nó 1, pois as transações são realizadas com a chave address do wallet deste host que é o único habilitado  a realizar as transações sobre os streams gerados.
+* O resultado exibido na tela é o ID da transação.
+
+* Obs: a ação de emitir nota só pode ser realizada no nó 1, pois as transações são realizadas com a chave address do wallet deste host que é o único habilitado  a realizar as transações sobre os streams gerados.
+
 
 - **Passo 8**: Consultar notas fiscais emitidas:
 ```
@@ -211,7 +214,7 @@ cc8aac7fb852eca1c8fca8bcfc3a9841816b213eff69f89d84451f105bbc5d5f
 >**Exemplo**:
 >Consultar notas emitidas pelo cpf 98765432101
 ```
-#nfechain-listar-notas-emitidas 9876543210
+#nfechain-listar-notas-emitidas 98765432101
 ```
 >Resultado:
 ```
@@ -219,12 +222,35 @@ cc8aac7fb852eca1c8fca8bcfc3a9841816b213eff69f89d84451f105bbc5d5f
 ```
 > Esta informação no formato json é persistida no campo **data** de cada stream no formato hexadecimal.
 
-O trecho abaixo mostra o stream sem a conversão
+> O trecho abaixo mostra o stream bruto contendo a informação da nota sem a conversão amigável em JSON feita pelos scripts de comandos.
+
+* a chave corresponde ao identificador do destinatário CPF/CNPJ e foi pensada de forma a facilitar um mecanismo de filtragem para busca de notas, tendo em vista que o próprio stream onde está registrado (neste caso é o strem de nome **emt98765432101** e ele armazena todos os recibos emitidos pelo CPF 98765432101.
+
+* Observe também o campo **data** "277b6...7d27". Este campo contém as informaçõe detalhadas em campos multivalorados no formato JSON.
+
+* Observe que o valor do campo **txid** representa o ID da transação, resposta do comando executado no **passo 7**.
 ```
-$!!!!!!!!!!!!!!!!!
+[
+    {
+        "publishers" : [
+            "1YhvSRkq8L5vSo5CwziircJGKAhBvAiqXyyuzh"
+        ],
+        "key" : "12345678901",
+        "data" : "277b656d6974656e74653a273938373635343332313031272c206661766f72656369646f3a273132333435363738393031272c2076616c6f723a3135302c2064657363726963616f3a277365727669636f20646520636f6e73756c7461206d6564696361277d27",
+        "confirmations" : 16,
+        "blockhash" : "005ef3644344e399d64b6a01c2a70ae34241d8dcc48f14807edaabe9ffa1f7ee",
+        "blockindex" : 3,
+        "blocktime" : 1499201187,
+        "txid" : "def5b359fe00c68f520869aae63d42684e65456bab17b161442b7bc5fa6f3549",
+        "vout" : 0,
+        "valid" : true,
+        "time" : 1499201177,
+        "timereceived" : 1499201177
+    }
+]
 ```
 
-** No segundo container [nó 2] **
+**No segundo container [nó 2]**
 
 - **Passo 9**: Consultar notas fiscais recebidas acessando pelo outro nó:
 ```
