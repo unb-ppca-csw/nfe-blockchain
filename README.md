@@ -1,5 +1,5 @@
 # nfe-blockchain 
-## Sistema de Armazenamento de Notas Fiscais usando Blockchain
+## Sistema de Armazenamento de Notas Fiscais Eletrônicas (nfe) usando Blockchain
 Sistema para armazenamento de Notas Fiscais emitidas por pessoas físicas ou jurídicas para pessoas físicas ou jurídicas em formato de blockchain.
 
 Este texto aborda sobre uma proposta de sistema para armazenamento de Notas Fiscais emitidas por pessoas físicas ou jurídicas para pessoas físicas ou jurídicas em formato de blockchain
@@ -67,7 +67,7 @@ cd nfe-blockchain
 
 >OBS.: As operações a seguir devem ser executadas como root ou com **sudo**.
 
-- **Passo 2**: Criar uma rede interna docker chamada 'nfenetwork' para simular os múltiplos nós da rede
+- **Passo 2**: Criar uma rede interna docker chamada 'nfechainnetwork' para simular os múltiplos nós da rede
 > Vá até a pasta docker [/docker](docker) e execute os seguintes comandos:
 ```
 #docker network create --subnet=192.168.0.0/16 nfechainnetwork
@@ -81,7 +81,7 @@ cd nfe-blockchain
 #docker build -t nfechain_node2 .
 #docker build -t nfechain_node3 .
 ```
->para facilitar vá até a pasta [/docker](docker) e execute o script **build_docker_image.sh**
+> para facilitar vá até a pasta [/docker](docker) e execute o script **build_docker_image.sh**
 
 > OBS.: Os dados presentes possuem credenciais de autenticação e identificadores definidos que serão usadas nos exemplos de aplicação. Recomenda-se em casos reais de aplicação a modificação desses parâmetros!
 
@@ -94,14 +94,14 @@ O serviço levantado irá habilitar duas portas de comunicação:
 - **Passo 1**: Executar o container do nó proprietário a partir da imagem criada:
 >Este container será referenciado como **nó 1**
 ```
-#docker run --network=nfechainnetwork --name no1 --ip=192.168.0.7 -it --rm -v /home/user/shared/:/shared nfechain_node1
+#docker run --network=nfechainnetwork --name no1 --ip=192.168.0.7 -it --rm nfechain_node1
 ```
 >para facilitar vá até a pasta [/docker](docker) e execute o script **start_no1.sh**
 
 - **Passo 2**: Em nova sessão de terminal execute o container dos outros nós:
 >Este container será referenciado como **nó 2**
 ```
-#docker run --network=nfechainnetwork --name no2 --ip=192.168.0.8 -it --rm -v /home/user/shared/:/shared nfechain_node2
+#docker run --network=nfechainnetwork --name no2 --ip=192.168.0.8 -it --rm nfechain_node2
 ```
 >para facilitar vá até a pasta [/docker](docker) e execute o script **start_no2.sh**
 
@@ -115,7 +115,24 @@ Pronto! agora teremos os dois nós conectados, prontos para interagir.
 ```
 >resultado:
 ```
-$!OUTPUT!$
+MultiChain utilities build 1.0 beta 2 protocol 10008
+
+Blockchain parameter set was successfully generated.
+You can edit it in /root/.multichain/nfe/params.dat before running multichaind for the first time.
+
+To generate blockchain please run "multichaind nfe -daemon".
+
+MultiChain Core Daemon build 1.0 beta 2 protocol 10008
+
+MultiChain server starting
+Looking for genesis block...
+Genesis block found
+
+Other nodes can connect to this node using:
+multichaind nfe@192.168.0.7:5555
+
+Node started
+Nó blockchain: 'nfe' criado com sucesso!
 ```
 
 - **Passo 4**:  Listar as notas fiscais recebidas por determinado cpf/cnpj:
@@ -124,7 +141,11 @@ $!OUTPUT!$
 ```
 >resultado:
 ```
-$!OUTPUT!$
+{"method":"liststreamitems","params":["fav12345678901",true],"id":1,"chain_name":"nfe"}
+
+error code: -708
+error message:
+Stream with this name not found: fav12345678901
 ```
 >Observe que não será listado nenhuma nota associada ao cpf exemplo
 
@@ -136,7 +157,14 @@ $!OUTPUT!$
 ```
 >resultado:
 ```
-$!OUTPUT!$
+MultiChain Core Daemon build 1.0 beta 2 protocol 10008
+
+MultiChain server starting
+Retrieving blockchain parameters from the seed node 192.168.0.7:5555 ...
+Other nodes can connect to this node using:
+multichaind nfe@192.168.0.8:5555
+
+Node started
 ```
 
 - **Passo 6**: Verificar a lista de notas emitidas zeradas:
@@ -150,7 +178,9 @@ $!OUTPUT!$
 ```
 >resultado:
 ```
-$!OUTPUT!$
+error code: -708
+error message:
+Stream with this name not found: emt98765432101
 ```
 >Observe que também não será listado nenhuma nota associada ao cpf exemplo
 
@@ -160,13 +190,19 @@ $!OUTPUT!$
 ```
 #nfechain-emitir-nota <cpf/cnpj emitente> <cpf/cnpj favorecido> <valor> <descricao>
 ```
+
 >**Exemplo**:
 >Informações da Nota: emitente: 9876543210 favorecido: 12345678901 valor: 150 descrição: serviço de consulta medica
 ```
-#nfechain-emitir 98765432101 12345678901 150 "servico de consulta medica"
+#nfechain-emitir-nota 98765432101 12345678901 150 "servico de consulta medica"
 ```
+>Resultado:
+```
+cc8aac7fb852eca1c8fca8bcfc3a9841816b213eff69f89d84451f105bbc5d5f
+```
+>Obs: a ação de emitir nota só pode ser realizada no nó 1, pois as transações são realizadas com a chave address do wallet deste host que é o único habilitado  a realizar as transações sobre os streams gerados.
 
-- **Passo 9**: Consultar notas fiscais emitidas:
+- **Passo 8**: Consultar notas fiscais emitidas:
 ```
 #nfechain-listar-notas-emitidas <cpf/cnpj emitente>
 ```
@@ -175,14 +211,14 @@ $!OUTPUT!$
 ```
 #nfechain-listar-notas-emitidas 9876543210
 ```
->resultado:
+>Resultado:
 ```
-$!OUTPUT!$
+'{emitente:'98765432101', favorecido:'12345678901', valor:150, descricao:'servico de consulta medica'}'
 ```
 
 ** No segundo container [nó 2] **
 
-- **Passo 10**: Consultar notas fiscais recebidas:
+- **Passo 9**: Consultar notas fiscais recebidas acessando pelo outro nó:
 ```
 #nfechain-listar-notas-recebidas <cpf/cnpj favorecido>
 ```
@@ -193,9 +229,30 @@ $!OUTPUT!$
 ```
 >Resultado:
 ```
-$!OUTPUT!$
+'{emitente:'98765432101', favorecido:'12345678901', valor:150, descricao:'servico de consulta medica'}'
 ```
 
-# 7. Licença
+# 7. Modo de funcionamento
 
-O código e todo conteúdo presente neste progeto estão cobertos pela licença **GNU General Public License v3.0**, presente no arquivo [LICENSE](LICENSE).
+As notas fiscais são armazenadas em streams identificadas pelo CPF/CNPJ do usuário e cujo prefixo indicam se são streams de notas emitidas pela pessoa ou se são de notas recebidas pelas pessoas. 
+
+Ex:
+O comando **nfechain-emitir-nota 98765432101 12345678901 150 "servico de consulta medica"** gera os seguintes streams
+* emt98765432101
+* fav12345678901
+
+> O primeiro stream armazena as notas fiscais emitidas pelo usuário 98765432101
+> O segundo stream armazena as notas fiscais recebidas pelo usuário 12345678901
+
+Desta forma, para consultar as notas, a depender do papael do usuário nesta transação, basta consultar os blocos armazenados nestas streams.
+
+Como sugestão de evolução futura, temos o ofuscamento da identidade das streams das pessoas, de forma que o identificador utilizado pelo sistema para gerar o nome das streams e com isto recuperar as informações corretas para cada usuário não deve ser possível que a identidade dos participantes seja deduzida apenas ao olhar pelo identificador das strams. Para que isto ocorra é necessário o emprego de outras estruturas de dados para armazenar a associação entre a identidade real do usuário e o identificador associado aos streams.
+
+# 8. Conclusões nfeblockchain
+
+Pode-se verificar que com esta pequena implementação de blockchain que a biblioteca multichain permite criar um sistema de compartilhamento de Notas Fiscais formando uma rede blockchain, permitindo uma série de vantagens no uso desta tecnologia que a princípio pode ser utilizado pelo SERPRO e outros órgãos de governo que lidam com dados fiscais, tanto para fiscalização aduaneira e tributária, como também para fornecer acesso facilitado às informações sobre as notas fiscais emitidas ou recebidas pelos cidadãos no Brasil, onde atualmenet apesar de haver uma informatização do sistema, estas informações não estão acessíveis a todo o público a quem interessa. Desta forma, estas informações poderiam ser acessadas sempre que desejado. Em um contexto de uso prático desta tecnologia é necessário tornar os dados ofuscados e proteger o payload do detalhamento dos registros das notas fiscais, por uma questão de sigilo das transações e até mesmo segurança das próprias pessoas. Desta forma, idealmente somente o emitente, o emissor e os órgãos públicos e outras entidades deveriam poder acessar estas informações.
+Portanto, o propósito deste trabalho era apenas apresentar um passo inicial de uma implementação da solução e futuramente, caso seja aplicável, necessitará receber uma série de melhorias nos aspectos de segurança para que possa ser usada de forma abrangente.
+
+# 9. Licença
+
+O código e todo conteúdo presente neste projeto estão cobertos pela licença **GNU General Public License v3.0**, presente no arquivo [LICENSE](LICENSE).
