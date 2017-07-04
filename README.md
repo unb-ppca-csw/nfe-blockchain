@@ -264,7 +264,24 @@ def5b359fe00c68f520869aae63d42684e65456bab17b161442b7bc5fa6f3549
 '{emitente:'98765432101', favorecido:'12345678901', valor:150, descricao:'servico de consulta medica'}'
 ```
 
-# 7. Modo de funcionamento
+# 7. Resumo dos passos executados no caso de exemplo
+```
+[nó 1]
+nfechain-criar
+
+[nó 2]
+nfechain-conectar
+
+[nó 1]
+nfechain-emitir-nota 98765432101 12345678901 150 "servico de consulta medica"
+nfechain-listar-notas-emitidas 98765432101
+
+[nó 2]
+nfechain-listar-notas-recebidas 12345678901
+```
+
+
+# 8. Modo de funcionamento
 
 As notas fiscais são armazenadas em streams identificadas pelo CPF/CNPJ do usuário e cujo prefixo indicam se são streams de notas emitidas pela pessoa ou se são de notas recebidas pelas pessoas. 
 
@@ -280,7 +297,7 @@ Desta forma, para consultar as notas, a depender do papael do usuário nesta tra
 
 Como sugestão de evolução futura, temos o ofuscamento da identidade das streams das pessoas, de forma que o identificador utilizado pelo sistema para gerar o nome das streams e com isto recuperar as informações corretas para cada usuário não deve ser possível que a identidade dos participantes seja deduzida apenas ao olhar pelo identificador das strams. Para que isto ocorra é necessário o emprego de outras estruturas de dados para armazenar a associação entre a identidade real do usuário e o identificador associado aos streams.
 
-# 8. Conclusões
+# 9. Conclusões
 
 Pode-se verificar que com esta pequena implementação de blockchain que a biblioteca multichain permite criar um sistema de compartilhamento de Notas Fiscais formando uma rede blockchain segura e de compartilhamento distribuído, permitindo uma série de vantagens no uso desta tecnologia que a princípio o seu uso poderia ser estimulado pelo SERPRO em parceria com a Receita Federal e outros órgãos de governo que lidam com dados fiscais (Secretarias de Fazenda Estaduais e Municipais), etc, tanto para dar apoio à fiscalização aduaneira e tributária, como também para fornecer acesso facilitado às informações sobre as notas fiscais emitidas ou recebidas pelos cidadãos no Brasil, onde atualmente apesar de haver um avanço no nível de informatização e automação dos sistema fiscais com iniciativas como Nota Fiscal Eletrônica, estas informações trafegadas nos sistemas de governo não estão acessíveis ao público que delas interessa e necessitam.
 
@@ -288,6 +305,6 @@ Desta forma, estas informações poderiam ser acessadas sempre que desejado pelo
 
 Portanto, neste foi abordado um passo inicial de  implementação da solução de blockchain para troca de recibos de notas fiscais e esta proposta abre uma oportunidade para novas discussões acerca de soluções que poderão ser provdias por esta ideia, bem como a oportunidade de discussões sobre uma série de melhorias nos aspectos de segurança para que esta solução possa ser usada de forma abrangente.
 
-# 9. Licença
+# 10. Licença
 
 O código e todo conteúdo presente neste projeto estão cobertos pela licença **GNU General Public License v3.0**, presente no arquivo [LICENSE](LICENSE).
