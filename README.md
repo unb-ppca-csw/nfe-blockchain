@@ -174,7 +174,7 @@ Node started
 #nfechain-listar-notas-emitidas <cpf/cnpj emitente>
 ```
 >**Exemplo**:
->Verificar notas emitidas pelo seguinte emitente: 9876543210
+>Verificar notas emitidas pelo seguinte emitente: 98765432101
 ```
 #nfechain-listar-notas-emitidas 98765432101
 ```
@@ -194,7 +194,7 @@ Stream with this name not found: emt98765432101
 ```
 
 >**Exemplo**:
->Informações da Nota: emitente: 9876543210 favorecido: 12345678901 valor: 150 descrição: serviço de consulta medica
+>Informações da Nota: emitente: 98765432101 favorecido: 12345678901 valor: 150 descrição: serviço de consulta medica
 ```
 #nfechain-emitir-nota 98765432101 12345678901 150 "servico de consulta medica"
 ```
@@ -209,7 +209,7 @@ cc8aac7fb852eca1c8fca8bcfc3a9841816b213eff69f89d84451f105bbc5d5f
 #nfechain-listar-notas-emitidas <cpf/cnpj emitente>
 ```
 >**Exemplo**:
->Consultar notas emitidas pelo cpf 9876543210
+>Consultar notas emitidas pelo cpf 98765432101
 ```
 #nfechain-listar-notas-emitidas 9876543210
 ```
