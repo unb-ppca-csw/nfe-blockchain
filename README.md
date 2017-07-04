@@ -43,6 +43,8 @@ http://www.multichain.com/developers/stream-confidentiality/
 * A solução de implementação do blockchain é o multichain
 http://www.multichain.com
 
+* Todos os scripts da solução estão presents na pasta [/docker/bin(docker/bin).
+
 # 6.1 Instalação do Multichain
 Manual de instalação em ambiente Linux:
 
@@ -147,7 +149,7 @@ error code: -708
 error message:
 Stream with this name not found: fav12345678901
 ```
->Observe que não será listado nenhuma nota associada ao cpf exemplo
+>Observe que não será listado nenhuma nota associada ao cpf exemplo porque nenhuma nota foi gerada.
 
 >** No segundo container [nó 2]: **
 
@@ -182,7 +184,7 @@ error code: -708
 error message:
 Stream with this name not found: emt98765432101
 ```
->Observe que também não será listado nenhuma nota associada ao cpf exemplo
+>Observe que também não será listado nenhuma nota associada ao cpf exemplo porque nenhma nota ainda foi gerada.
 
 ** No primeiro container [nó 1]: **
 
@@ -214,6 +216,12 @@ cc8aac7fb852eca1c8fca8bcfc3a9841816b213eff69f89d84451f105bbc5d5f
 >Resultado:
 ```
 '{emitente:'98765432101', favorecido:'12345678901', valor:150, descricao:'servico de consulta medica'}'
+```
+> Esta informação no formato json é persistida no campo **data** de cada stream no formato hexadecimal.
+
+O trecho abaixo mostra o stream sem a conversão
+```
+$!!!!!!!!!!!!!!!!!
 ```
 
 ** No segundo container [nó 2] **
