@@ -137,19 +137,17 @@ Node started
 Nó blockchain: 'nfe' criado com sucesso!
 ```
 
-- **Passo 4**:  Listar as notas fiscais recebidas por determinado cpf/cnpj:
+- **Passo 4**:  Listar as notas fiscais recebidas por determinado CPF/CNPJ:
 ```
 #nfechain-listar-notas-recebidas 12345678901 
 ```
 >resultado:
 ```
-{"method":"liststreamitems","params":["fav12345678901",true],"id":1,"chain_name":"nfe"}
-
 error code: -708
 error message:
 Stream with this name not found: fav12345678901
 ```
->Observe que não será listado nenhuma nota associada ao cpf exemplo porque nenhuma nota foi gerada.
+>Observe que não será listado nenhuma nota associada ao CPF exemplo porque nenhuma nota foi gerada.
 
 **No segundo container [nó 2]:**
 
@@ -184,7 +182,7 @@ error code: -708
 error message:
 Stream with this name not found: emt98765432101
 ```
->Observe que também não será listado nenhuma nota associada ao cpf exemplo porque nenhma nota ainda foi gerada.
+>Observe que também não será listado nenhuma nota associada ao CPF exemplo porque nenhma nota ainda foi gerada.
 
 **No primeiro container [nó 1]:**
 
@@ -212,7 +210,7 @@ def5b359fe00c68f520869aae63d42684e65456bab17b161442b7bc5fa6f3549
 #nfechain-listar-notas-emitidas <cpf/cnpj emitente>
 ```
 >**Exemplo**:
->Consultar notas emitidas pelo cpf 98765432101
+>Consultar notas emitidas pelo CPF 98765432101
 ```
 #nfechain-listar-notas-emitidas 98765432101
 ```
@@ -226,7 +224,7 @@ def5b359fe00c68f520869aae63d42684e65456bab17b161442b7bc5fa6f3549
 
 * a chave corresponde ao identificador do destinatário CPF/CNPJ e foi pensada de forma a facilitar um mecanismo de filtragem para busca de notas, tendo em vista que o próprio stream onde está registrado (neste caso é o strem de nome **emt98765432101** e ele armazena todos os recibos emitidos pelo CPF 98765432101.
 
-* Observe também o campo **data** "277b6...7d27". Este campo contém as informaçõe detalhadas em campos multivalorados no formato JSON.
+* Observe também o campo **data** = "277b656d6974656e74653...7d27". Este campo contém as informaçõe detalhadas em campos multivalorados no formato JSON.
 
 * Observe que o valor do campo **txid** representa o ID da transação, resposta do comando executado no **passo 7**.
 ```
@@ -284,10 +282,11 @@ Como sugestão de evolução futura, temos o ofuscamento da identidade das strea
 
 # 8. Conclusões
 
-Pode-se verificar que com esta pequena implementação de blockchain que a biblioteca multichain permite criar um sistema de compartilhamento de Notas Fiscais formando uma rede blockchain, permitindo uma série de vantagens no uso desta tecnologia que a princípio pode ser utilizado pelo SERPRO e outros órgãos de governo que lidam com dados fiscais, tanto para fiscalização aduaneira e tributária, como também para fornecer acesso facilitado às informações sobre as notas fiscais emitidas ou recebidas pelos cidadãos no Brasil, onde atualmenet apesar de haver uma informatização do sistema, estas informações não estão acessíveis a todo o público a quem interessa. 
+Pode-se verificar que com esta pequena implementação de blockchain que a biblioteca multichain permite criar um sistema de compartilhamento de Notas Fiscais formando uma rede blockchain segura e de compartilhamento distribuído, permitindo uma série de vantagens no uso desta tecnologia que a princípio o seu uso poderia ser estimulado pelo SERPRO em parceria com a Receita Federal e outros órgãos de governo que lidam com dados fiscais (Secretarias de Fazenda Estaduais e Municipais), etc, tanto para dar apoio à fiscalização aduaneira e tributária, como também para fornecer acesso facilitado às informações sobre as notas fiscais emitidas ou recebidas pelos cidadãos no Brasil, onde atualmente apesar de haver um avanço no nível de informatização e automação dos sistema fiscais com iniciativas como Nota Fiscal Eletrônica, estas informações trafegadas nos sistemas de governo não estão acessíveis ao público que delas interessa e necessitam.
 
-Desta forma, estas informações poderiam ser acessadas sempre que desejado. Em um contexto de uso prático desta tecnologia é necessário tornar os dados ofuscados e proteger o payload do detalhamento dos registros das notas fiscais, por uma questão de sigilo das transações e até mesmo segurança das próprias pessoas que podem ter o seu padrão de gastos expostos para todos na rede. Idealmente somente o emitente, o emissor e os órgãos públicos e outras entidades deveriam poder acessar estas informações.
-Portanto, o propósito deste trabalho era apenas apresentar um passo inicial de uma implementação da solução e futuramente, caso seja aplicável, necessitará receber uma série de melhorias nos aspectos de segurança para que possa ser usada de forma abrangente.
+Desta forma, estas informações poderiam ser acessadas sempre que desejado pelos donos das informações e quaisquer outras partes interessadas, desde que atenda alguns princípios de segurança. Em um contexto de uso prático desta tecnologia é necessário avaliar os aspectos de segurança para tornar os dados ofuscados e proteger o payload do detalhamento dos registros das notas fiscais, tanto por uma questão de sigilo das transações, como pela segurança das próprias pessoas que tem o seu padrão de gastos expostos para todos na rede. Idealmente somente o emitente, o emissor e os órgãos públicos e outras entidades deveriam poder ter acesso a estas informações e uma solução razoável é a implementação da solução mencionada no item 5 deste texto.
+
+Portanto, neste foi abordado um passo inicial de  implementação da solução de blockchain para troca de recibos de notas fiscais e esta proposta abre uma oportunidade para novas discussões acerca de soluções que poderão ser provdias por esta ideia, bem como a oportunidade de discussões sobre uma série de melhorias nos aspectos de segurança para que esta solução possa ser usada de forma abrangente.
 
 # 9. Licença
 
