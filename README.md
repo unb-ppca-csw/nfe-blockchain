@@ -109,7 +109,7 @@ O serviço levantado irá habilitar duas portas de comunicação:
 
 Pronto! agora teremos os dois nós conectados, prontos para interagir.
 
-> ** No primeiro nó [nó 1] (proprietário): **
+**No primeiro nó [nó 1] (proprietário):**
 
 - **Passo 3**: Criar o blockchain:
 ```
