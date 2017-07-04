@@ -43,13 +43,6 @@ http://www.multichain.com/developers/stream-confidentiality/
 * A solução de implementação do blockchain é o multichain
 http://www.multichain.com
 
-~~* A solução de integração à API é a biblioteca MultiChainJavaAPI
-https://github.com/SimplyUb/MultiChainJavaAPI~~
-
-~~A solução presente na pasta do projeto [src/cliente-nfe-blockchain](src/cliente-nfe-blockchain) contém o código da solução do projeto.~~
-
-~~A pasta [releases](/releases) contém os arquivos .jar com a última versão compilada do projeto, pronta para executar.~~
-
 # 6.1 Instalação do Multichain
 Manual de instalação em ambiente Linux:
 
@@ -72,39 +65,45 @@ git clone https://github.com/unb-ppca-construcao-de-software-2017/nfe-blockchain
 cd nfe-blockchain
 ```
 
+>OBS.: As operações a seguir devem ser executadas como root ou com **sudo**.
+
 - **Passo 2**: Criar uma rede interna docker chamada 'nfenetwork' para simular os múltiplos nós da rede
->OBS.: operações devem ser executadas como root ou com **sudo**.
+> Vá até a pasta docker [/docker](docker) e execute os seguintes comandos:
 ```
-#docker network create --subnet=10.0.0.0/16 nfechainnetwork
+#docker network create --subnet=192.168.0.0/16 nfechainnetwork
 ```
+>para facilitar vá até a pasta [/docker](docker) e execute o script **create_docker_network.sh**
 
 - **Passo 3**: Passo 3: Construir a imagem docker
+> Vá até a pasta [/docker](docker) e execute os seguintes comandos:
 ```
-#docker build -t nfechainimage -f docker/Dockerfile .
+#docker build -t nfechain_node1 .
+#docker build -t nfechain_node2 .
+#docker build -t nfechain_node3 .
 ```
->para facilitar vá na pasta docker e execute ./build_docker_image.sh
+>para facilitar vá até a pasta [/docker](docker) e execute o script **build_docker_image.sh**
 
 > OBS.: Os dados presentes possuem credenciais de autenticação e identificadores definidos que serão usadas nos exemplos de aplicação. Recomenda-se em casos reais de aplicação a modificação desses parâmetros!
 
 O serviço levantado irá habilitar duas portas de comunicação:
-- **4000** - porta de comunicação entre nós da blockchain
-- **4001** - porta de comunicação do protocolo RPC
+- **5554** - porta de comunicação entre nós da blockchain
+- **5555** - porta de comunicação do protocolo RPC
 
 # 6.3 Execução
 
 - **Passo 1**: Executar o container do nó proprietário a partir da imagem criada:
 >Este container será referenciado como **nó 1**
 ```
-#docker run --network=nfechainnetwork --ip=10.0.0.1 -it nfechainimage
+#docker run --network=nfechainnetwork --name no1 --ip=192.168.0.7 -it --rm -v /home/user/shared/:/shared nfechain_node1
 ```
->para facilitar vá na pasta docker e execute ./start_no1.sh
+>para facilitar vá até a pasta [/docker](docker) e execute o script **start_no1.sh**
 
 - **Passo 2**: Em nova sessão de terminal execute o container dos outros nós:
 >Este container será referenciado como **nó 2**
 ```
-#docker run --network=nfechainnetwork --ip=10.0.0.2 -it nfechainimage
+#docker run --network=nfechainnetwork --name no2 --ip=192.168.0.8 -it --rm -v /home/user/shared/:/shared nfechain_node2
 ```
->para facilitar vá na pasta docker e execute ./start_no2.sh
+>para facilitar vá até a pasta [/docker](docker) e execute o script **start_no2.sh**
 
 Pronto! agora teremos os dois nós conectados, prontos para interagir.
 
@@ -112,94 +111,89 @@ Pronto! agora teremos os dois nós conectados, prontos para interagir.
 
 - **Passo 3**: Criar o blockchain:
 ```
-#nfechain criar
+#nfechain-criar
 ```
 >resultado:
 ```
 $!OUTPUT!$
 ```
 
-- **Passo 4**:  Listar as notas fiscais recebidas:
+- **Passo 4**:  Listar as notas fiscais recebidas por determinado cpf/cnpj:
 ```
-#nfechain-listar-notas-recebidas
+#nfechain-listar-notas-recebidas 12345678901 
 ```
 >resultado:
 ```
 $!OUTPUT!$
 ```
->Observe que não será listado nenhuma nota associada ao usuário
+>Observe que não será listado nenhuma nota associada ao cpf exemplo
 
 >** No segundo container [nó 2]: **
 
 - **Passo 5**: Conectar ao blockchain:
 ```
-#nfechain conectar
+#nfechain-conectar
 ```
 >resultado:
 ```
 $!OUTPUT!$
 ```
 
-- **Passo 6**: Saldo de notas emitidas zeradas:
+- **Passo 6**: Verificar a lista de notas emitidas zeradas:
 ```
-#nfechain-listar-notas-emitidas
+#nfechain-listar-notas-emitidas <cpf/cnpj emitente>
+```
+>**Exemplo**:
+>Verificar notas emitidas pelo seguinte emitente: 9876543210
+```
+#nfechain-listar-notas-emitidas 98765432101
 ```
 >resultado:
 ```
 $!OUTPUT!$
 ```
-
-- **Passo 7**: Obter identificador (endereço) do wallet para receber as notas fiscais (copie o resultado da execução do comando):
-```
-#nfechain-mostra-wallet-id
-```
->resultado:
-```
-5F3kn6gxta5p5gqtFF34NCsqKT1cCgDceCADaS
-```
->**OBS.:** A título de exemplo foi colocado um ID do Wallet do contexto de uma execução, porém esses ID´s são definidos aleatoriamente no momento da criação de cada nó da cadeia
+>Observe que também não será listado nenhuma nota associada ao cpf exemplo
 
 ** No primeiro container [nó 1]: **
 
-- **Passo 8**: Emitir uma nota fiscal de 100 reais para o segundo nó [nó 2]:
->Informações da Nota: emitente: 1234567890 favorecido: 0987654321 valor: 100 descrição: serviço de consulta medica
+- **Passo 7**: Emitir uma nota fiscal de 100 reais para o segundo nó [nó 2] seguindo o seguinte modelo:
 ```
-#nfechain-emitir 1234567890 0987654321 100 <endereço-do-segundo-nó> "servico de consulta medica"
+#nfechain-emitir-nota <cpf/cnpj emitente> <cpf/cnpj favorecido> <valor> <descricao>
 ```
->Exemplo:
+>**Exemplo**:
+>Informações da Nota: emitente: 9876543210 favorecido: 12345678901 valor: 150 descrição: serviço de consulta medica
 ```
-#nfechain-emitir 1234567890 0987654321 100 "servico de consulta medica" 5F3kn6gxta5p5gqtFF34NCsqKT1cCgDceCADaS
+#nfechain-emitir 98765432101 12345678901 150 "servico de consulta medica"
 ```
 
 - **Passo 9**: Consultar notas fiscais emitidas:
 ```
-#nfechain-listar-notas-emitidas
+#nfechain-listar-notas-emitidas <cpf/cnpj emitente>
+```
+>**Exemplo**:
+>Consultar notas emitidas pelo cpf 9876543210
+```
+#nfechain-listar-notas-emitidas 9876543210
 ```
 >resultado:
 ```
-5F3kn6gxta5p5gqtFF34NCsqKT1cCgDceCADaS | 1234567890 | 0987654321 | servico de consulta medica
+$!OUTPUT!$
 ```
-
-- **Passo 10**: Consultar identificador (endereço) do wallet do emissor:
-```
-#nfechain-mostra-wallet-id
-```
->resultado:
-```
-2A4pa4aqFc0k3dQf42D41cNqsTK1CcDe4fDBaaS
-```
->**OBS.:** leia as observações do passo 7 acerca do identificador 
-
 
 ** No segundo container [nó 2] **
 
 - **Passo 10**: Consultar notas fiscais recebidas:
 ```
-#nfechain-listar-notas-recebidas
+#nfechain-listar-notas-recebidas <cpf/cnpj favorecido>
 ```
->resultado:
+>**Exemplo**:
+>Consultar notas emitidas pelo cpf 12345678901
 ```
-2A4pa4aqFc0k3dQf42D41cNqsTK1CcDe4fDBaaS | 1234567890 | 0987654321 | servico de consulta medica
+#nfechain-listar-notas-recebidas 12345678901
+```
+>Resultado:
+```
+$!OUTPUT!$
 ```
 
 # 7. Licença
